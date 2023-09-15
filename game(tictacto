@@ -1,0 +1,188 @@
+package practice;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.Stack;
+
+public class Test {
+
+	
+	    public static void main(String args[])
+	    {
+	    	int size=4;
+	    	
+	    	char board[][]=new char[size][size];
+	    	
+	    	for(int row=0;row<board.length;row++)
+	    	{
+	    		for(int column=0;column<board[0].length;column++)
+	    		{
+	    			board[row][column]=' ';
+	    		}
+	    	}
+	    	gameStart(board,size);
+	    	
+		}
+
+		private static void gameStart(char[][] board,int size) {
+			char player='X';
+			Scanner scanner=new Scanner(System.in);
+			int temp=0;
+			boolean gameOver=false;
+			//printBoard(board);
+			while(!gameOver)
+			{
+				if(temp==size*size)
+				{
+					System.out.println("Match draw!!");
+					break;
+				}
+				printBoard(board);
+				System.out.println("player-"+player+" Enter place from 1-"+size*size);
+				int choice=scanner.nextInt();
+				int row=findRow(choice,size);
+				//System.out.println(row);
+				int column=findColumn(choice,row,size);
+				//System.out.println(column);
+				if(board[row][column]==' ')
+				{
+					board[row][column]=player;
+					gameOver=haveWon(board,player,row,column);
+				}
+				if(gameOver)
+				{
+					System.out.println("Player "+player+" has won");
+					printBoard(board);
+				}
+				else
+				{
+					temp++;
+					if (player=='X')
+						player = '0';
+					else
+						player = 'X';
+				}
+				
+			}
+			
+		}
+
+	
+
+		
+
+		private static boolean haveWon(char[][] board, char player,int row,int column) {
+			
+			int countRow=0,countColumn=0,countRightDiagonal=0,countLeftDiagonal=0;
+			for(int index=0;index<board.length;index++)
+			{
+				if(board[row][index]==player)
+				{
+					countRow++;
+				}
+			}
+			if(countRow==board.length)
+			{
+				return true;
+			}
+			for(int index=0;index<board.length;index++)
+			{
+				if(board[index][column]==player)
+				{
+					countColumn++;
+				}
+			}
+			if(countColumn==board.length)
+			{
+				return true;
+			}
+			for(int row1=0;row1<board.length;row1++)
+	    	{
+	    		for(int column1=0;column1<board[0].length;column1++)
+	    		{
+	    			if(row1==column1)
+	    			{
+	    				if(board[row1][column1]==player)
+	    				{
+	    					countLeftDiagonal++;
+	    				}
+	    			}
+	    			if(row1+column1==board.length-1)
+	    			{
+	    				if(board[row1][column1]==player)
+	    				{
+	    					countRightDiagonal++;
+	    				}
+	    			}
+	    		}
+	    	}
+			if(countRightDiagonal==board.length || countLeftDiagonal==board.length)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		private static void printBoard(char[][] board) {
+			for(int row=0;row<board.length;row++)
+	    	{
+	    		for(int column=0;column<board[0].length;column++)
+	    		{
+	    			System.out.print(board[row][column]+"_|");
+	    		}
+	    		System.out.println();
+	    	}
+			
+		}
+		private static int findRow(int choice,int size) {
+			int row=0;
+			if(choice%size==0)
+			{
+				row=(choice-1)/size;
+			}
+			else
+			{
+				row=choice/size;
+			}
+			return row;
+		}
+		private static int findColumn(int choice, int row, int size) {
+			int column=0;
+			int temp=row*size;
+			int array[]=new int[size];
+			
+			for(int index=0;index<size;index++)
+			{
+				array[index]=temp+index+1;
+			}
+			for(int index=0;index<size;index++)
+			{
+				if(choice==array[index])
+				{
+					column=index;
+				}
+			}
+			return column;
+		}
+}
+	
+  
+
+
+
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+
